@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<meta name="description" content="" />
+		<link rel="icon" href="/jsplumb-svelte-statemachine/favicon.png" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<meta http-equiv="content-security-policy" content="">
+	<link rel="stylesheet" href="/jsplumb-svelte-statemachine/_app/assets/pages/index.svelte-8da8313b.css">
+	<link rel="modulepreload" href="/jsplumb-svelte-statemachine/_app/start-0c47fbec.js">
+	<link rel="modulepreload" href="/jsplumb-svelte-statemachine/_app/chunks/vendor-43d368f5.js">
+	<link rel="modulepreload" href="/jsplumb-svelte-statemachine/_app/chunks/preload-helper-dafa6aee.js">
+	<link rel="modulepreload" href="/jsplumb-svelte-statemachine/_app/layout.svelte-bf04acb1.js">
+	<link rel="modulepreload" href="/jsplumb-svelte-statemachine/_app/pages/index.svelte-7ef06f44.js">
+	</head>
+	<body>
+		<div>
+
+
+<section class="jtk-demo-main demo svelte-11tuab">
+	<div class="jtk-demo-canvas canvas-wide statemachine-demo jtk-surface jtk-surface-nopan canvas svelte-11tuab" id="canvas"></div>
+	
+	
+	<div class="description"><h4>STATE MACHINE</h4>
+		<p>Nodes are connected with the StateMachine connector.</p>
+		<p>Endpoints are located with &#39;Continuous&#39; anchors, which are anchors whose location is
+			calculated based on the location of all other connected elements, and which guarantee a unique
+			endpoint per connection.
+		</p>
+		<p>Click and drag new Connections from the orange div in each element; the main elements in the
+			UI are configured to be Connection targets. You can drag from one of these divs onto its
+			parent element to create a &#39;loopback&#39; connection. Each element supports up to 5 Connections.
+		</p>
+		<p>Click on a Connection to delete it.</p>
+		<p>Double click on whitespace to add a new node</p></div>
+	
+</section>
+
+
+		<script type="module" data-hydrate="airn6i">
+		import { start } from "/jsplumb-svelte-statemachine/_app/start-0c47fbec.js";
+		start({
+			target: document.querySelector('[data-hydrate="airn6i"]').parentNode,
+			paths: {"base":"/jsplumb-svelte-statemachine","assets":"/jsplumb-svelte-statemachine"},
+			session: {},
+			route: true,
+			spa: false,
+			trailing_slash: "never",
+			hydrate: {
+				status: 200,
+				error: null,
+				nodes: [
+					import("/jsplumb-svelte-statemachine/_app/layout.svelte-bf04acb1.js"),
+						import("/jsplumb-svelte-statemachine/_app/pages/index.svelte-7ef06f44.js")
+				],
+				params: {}
+			}
+		});
+	</script></div>
+	</body>
+</html>
