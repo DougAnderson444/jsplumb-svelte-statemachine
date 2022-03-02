@@ -1,4 +1,4 @@
-import { uuid, clone, extend, isObject, TWO_PI, log, quadrant, gradient, pointOnLine, lineLength, isString, EventGenerator, isFunction, merge, isAssignableFrom, getWithFunction, removeWithFunction, suggest, forEach, getsert, rotatePoint, findWithFunction, filterList, functionChain, addToDictionary, theta, normal, perpendicularLineTo, setToArray, populate, isNumber, map, insertSorted } from "./jsplumb.util.es-fcf8a180.js";
+import { log, uuid, extend, clone, isString, isNumber, map, isObject, TWO_PI, quadrant, gradient, pointOnLine, lineLength, EventGenerator, isFunction, merge, isAssignableFrom, getWithFunction, removeWithFunction, suggest, forEach, getsert, rotatePoint, findWithFunction, filterList, functionChain, addToDictionary, theta, normal, perpendicularLineTo, setToArray, populate, insertSorted } from "./vendor-e8797a8c.js";
 var PerimeterAnchorShapes;
 (function(PerimeterAnchorShapes2) {
   PerimeterAnchorShapes2["Circle"] = "Circle";
@@ -1212,6 +1212,8 @@ var SOURCE = "source";
 var TARGET = "target";
 var BLOCK = "block";
 var NONE = "none";
+var SOURCE_INDEX = 0;
+var TARGET_INDEX = 1;
 var ABSOLUTE = "absolute";
 var FIXED = "fixed";
 var STATIC = "static";
@@ -1267,6 +1269,9 @@ var ERROR_TARGET_ENDPOINT_FULL = "Cannot establish connection: target endpoint i
 var ERROR_SOURCE_DOES_NOT_EXIST = "Cannot establish connection: source does not exist";
 var ERROR_TARGET_DOES_NOT_EXIST = "Cannot establish connection: target does not exist";
 var KEY_CONNECTION_OVERLAYS = "connectionOverlays";
+function isFullOverlaySpec(o) {
+  return o.type != null && o.options != null;
+}
 function convertToFullOverlaySpec(spec) {
   var o = null;
   if (isString(spec)) {
@@ -7315,5 +7320,132 @@ EndpointFactory.registerHandler(DotEndpointHandler);
 EndpointFactory.registerHandler(RectangleEndpointHandler);
 EndpointFactory.registerHandler(BlankEndpointHandler);
 Connectors.register(StraightConnector.type, StraightConnector);
-export { ABSOLUTE, ATTRIBUTE_GROUP, ATTRIBUTE_MANAGED, ATTRIBUTE_NOT_DRAGGABLE, ATTRIBUTE_SCOPE_PREFIX, ATTRIBUTE_TABINDEX, AbstractConnector, AbstractSegment, ArcSegment, BLOCK, BlankEndpoint, CHECK_CONDITION, CHECK_DROP_ALLOWED, CLASS_CONNECTOR, CLASS_ENDPOINT, CLASS_OVERLAY, Connection, Connectors, DotEndpoint, EVENT_MAX_CONNECTIONS, EVENT_ZOOM, Endpoint, EndpointRepresentation, FALSE, FIXED, INTERCEPT_BEFORE_DETACH, INTERCEPT_BEFORE_DRAG, INTERCEPT_BEFORE_START_DETACH, IS_DETACH_ALLOWED, JsPlumbInstance, NONE, Overlay, REDROP_POLICY_ANY, RectangleEndpoint, SELECTOR_MANAGED_ELEMENT, SOURCE, STATIC, TARGET, TRUE, UNDEFINED, WILDCARD, att, classList, cls, createFloatingAnchor, isArrowOverlay, isCustomOverlay, isDiamondOverlay, isLabelOverlay, isPlainArrowOverlay };
-//# sourceMappingURL=jsplumb.core.es-0ce3d9c6.js.map
+var jsplumb_core_es = /* @__PURE__ */ Object.freeze(/* @__PURE__ */ Object.defineProperty({
+  __proto__: null,
+  ABSOLUTE,
+  ATTRIBUTE_GROUP,
+  ATTRIBUTE_MANAGED,
+  ATTRIBUTE_NOT_DRAGGABLE,
+  ATTRIBUTE_SCOPE,
+  ATTRIBUTE_SCOPE_PREFIX,
+  ATTRIBUTE_TABINDEX,
+  AbstractConnector,
+  ArcSegment,
+  ArrowOverlay,
+  BLOCK,
+  BOTTOM,
+  BlankEndpoint,
+  BlankEndpointHandler,
+  CHECK_CONDITION,
+  CHECK_DROP_ALLOWED,
+  CLASS_CONNECTED,
+  CLASS_CONNECTOR,
+  CLASS_CONNECTOR_OUTLINE,
+  CLASS_ENDPOINT,
+  CLASS_ENDPOINT_ANCHOR_PREFIX,
+  CLASS_ENDPOINT_CONNECTED,
+  CLASS_ENDPOINT_DROP_ALLOWED,
+  CLASS_ENDPOINT_DROP_FORBIDDEN,
+  CLASS_ENDPOINT_FULL,
+  CLASS_GROUP_COLLAPSED,
+  CLASS_GROUP_EXPANDED,
+  CLASS_OVERLAY,
+  Component,
+  Connection,
+  ConnectionDragSelector,
+  ConnectionSelection,
+  Connectors,
+  CustomOverlay,
+  DiamondOverlay,
+  DotEndpoint,
+  DotEndpointHandler,
+  ERROR_SOURCE_DOES_NOT_EXIST,
+  ERROR_SOURCE_ENDPOINT_FULL,
+  ERROR_TARGET_DOES_NOT_EXIST,
+  ERROR_TARGET_ENDPOINT_FULL,
+  EVENT_ANCHOR_CHANGED,
+  EVENT_CONNECTION,
+  EVENT_CONNECTION_DETACHED,
+  EVENT_CONNECTION_MOVED,
+  EVENT_CONTAINER_CHANGE,
+  EVENT_ENDPOINT_REPLACED,
+  EVENT_GROUP_ADDED,
+  EVENT_GROUP_COLLAPSE,
+  EVENT_GROUP_EXPAND,
+  EVENT_GROUP_MEMBER_ADDED,
+  EVENT_GROUP_MEMBER_REMOVED,
+  EVENT_GROUP_REMOVED,
+  EVENT_INTERNAL_CONNECTION,
+  EVENT_INTERNAL_CONNECTION_DETACHED,
+  EVENT_INTERNAL_ENDPOINT_UNREGISTERED,
+  EVENT_MANAGE_ELEMENT,
+  EVENT_MAX_CONNECTIONS,
+  EVENT_NESTED_GROUP_ADDED,
+  EVENT_NESTED_GROUP_REMOVED,
+  EVENT_UNMANAGE_ELEMENT,
+  EVENT_ZOOM,
+  Endpoint,
+  EndpointFactory,
+  EndpointRepresentation,
+  EndpointSelection,
+  FIXED,
+  GroupManager,
+  INTERCEPT_BEFORE_DETACH,
+  INTERCEPT_BEFORE_DRAG,
+  INTERCEPT_BEFORE_DROP,
+  INTERCEPT_BEFORE_START_DETACH,
+  IS_DETACH_ALLOWED,
+  JsPlumbInstance,
+  KEY_CONNECTION_OVERLAYS,
+  LEFT,
+  LabelOverlay,
+  LightweightFloatingAnchor,
+  LightweightRouter,
+  NONE,
+  Overlay,
+  OverlayFactory,
+  PlainArrowOverlay,
+  REDROP_POLICY_ANY,
+  REDROP_POLICY_STRICT,
+  RIGHT,
+  RectangleEndpoint,
+  RectangleEndpointHandler,
+  SELECTOR_MANAGED_ELEMENT,
+  SOURCE,
+  SOURCE_INDEX,
+  STATIC,
+  SourceSelector,
+  StraightConnector,
+  StraightSegment,
+  TARGET,
+  TARGET_INDEX,
+  TOP,
+  TargetSelector,
+  UIGroup,
+  UINode,
+  Viewport,
+  X_AXIS_FACES,
+  Y_AXIS_FACES,
+  _createPerimeterAnchor,
+  _removeTypeCssHelper,
+  _updateHoverStyle,
+  att,
+  classList,
+  cls,
+  convertToFullOverlaySpec,
+  createFloatingAnchor,
+  getDefaultFace,
+  isArrowOverlay,
+  isContinuous,
+  isCustomOverlay,
+  isDiamondOverlay,
+  isDynamic,
+  isEdgeSupported,
+  isFloating: _isFloating,
+  isFullOverlaySpec,
+  isLabelOverlay,
+  isPlainArrowOverlay,
+  makeLightweightAnchorFromSpec
+}, Symbol.toStringTag, { value: "Module" }));
+export { ABSOLUTE, ATTRIBUTE_GROUP, ATTRIBUTE_MANAGED, ATTRIBUTE_NOT_DRAGGABLE, ATTRIBUTE_SCOPE_PREFIX, ATTRIBUTE_TABINDEX, AbstractConnector, AbstractSegment, ArcSegment, BLOCK, BlankEndpoint, CHECK_CONDITION, CHECK_DROP_ALLOWED, CLASS_CONNECTOR, CLASS_ENDPOINT, CLASS_OVERLAY, Connection, Connectors, DotEndpoint, EVENT_MAX_CONNECTIONS, EVENT_ZOOM, Endpoint, EndpointRepresentation, FALSE, FIXED, INTERCEPT_BEFORE_DETACH, INTERCEPT_BEFORE_DRAG, INTERCEPT_BEFORE_START_DETACH, IS_DETACH_ALLOWED, JsPlumbInstance, NONE, Overlay, REDROP_POLICY_ANY, RectangleEndpoint, SELECTOR_MANAGED_ELEMENT, SOURCE, STATIC, TARGET, TRUE, UNDEFINED, WILDCARD, att, classList, cls, createFloatingAnchor, isArrowOverlay, isCustomOverlay, isDiamondOverlay, isLabelOverlay, isPlainArrowOverlay, jsplumb_core_es };
+//# sourceMappingURL=jsplumb.core.es-2ecea26b.js.map

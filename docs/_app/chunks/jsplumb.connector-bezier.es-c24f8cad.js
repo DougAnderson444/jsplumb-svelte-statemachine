@@ -1,5 +1,5 @@
-import { extend, log } from "./jsplumb.util.es-fcf8a180.js";
-import { Connectors, ArcSegment, AbstractConnector, AbstractSegment } from "./jsplumb.core.es-0ce3d9c6.js";
+import { extend, log } from "./vendor-e8797a8c.js";
+import { Connectors, ArcSegment, AbstractConnector, AbstractSegment } from "./jsplumb.core.es-2ecea26b.js";
 function _classCallCheck(instance, Constructor) {
   if (!(instance instanceof Constructor)) {
     throw new TypeError("Cannot call a class as a function");
@@ -1031,4 +1031,4 @@ _defineProperty(StateMachineConnector, "type", "StateMachine");
 Connectors.register(BezierConnector.type, BezierConnector);
 Connectors.register(StateMachineConnector.type, StateMachineConnector);
 export { AbstractBezierConnector, BezierConnector, BezierSegment, StateMachineConnector, bezierLineIntersection, boundingBoxIntersection, boxIntersection, computeBezierLength, dist, distanceFromCurve, gradientAtPoint, gradientAtPointAlongPathFrom, isPoint, locationAlongCurveFrom, nearestPointOnCurve, perpendicularToPathAt, pointAlongCurveFrom, pointAlongPath, pointOnCurve };
-//# sourceMappingURL=jsplumb.connector-bezier.es-5cf1637c.js.map
+//# sourceMappingURL=jsplumb.connector-bezier.es-c24f8cad.js.map
