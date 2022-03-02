@@ -9,19 +9,13 @@
 	export let left;
 	export let top;
 
-	export let box;
+	export let box = null;
 	let ep;
 
 	const context = getContext(key);
 	const instance = context.getInstance();
 
 	$: if (box) instance.manage(box);
-
-	// <Box id={'opened'} action={'begin'}>BEGIN</Box>
-	// <Box id={'phone1'} action={'phone1'}>PHONE INTERVIEW 1</Box>
-	// <Box id={'phone2'} action={'phone2'}>PHONE INTERVIEW 2</Box>
-	// <Box id={'inperson'} action={'inperson'}>IN PERSON</Box>
-	// <Box id={'rejected'} action={'rejected'}>REJECTED</Box>
 
 	instance.addSourceSelector('.ep', {
 		edgeType: 'basic',
