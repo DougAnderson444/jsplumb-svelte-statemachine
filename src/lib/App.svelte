@@ -6,6 +6,8 @@
 
 	let canvas;
 	let instance;
+	let opened, begin, phone1, phone2, inperson, rejected;
+
 	const getInstance = () => instance;
 
 	setContext(key, {
@@ -15,6 +17,7 @@
 	onMount(async () => {
 		const { newInstance } = await import('@jsplumb/browser-ui');
 		const { BezierConnector } = await import('@jsplumb/connector-bezier');
+		const { uuid } = await import('@jsplumb/util');
 
 		// setup some defaults for jsPlumb.
 		instance = newInstance({
@@ -68,7 +71,7 @@
 
 		function newNode(x, y) {
 			var d = document.createElement('div');
-			var id = jsPlumb.uuid();
+			var id = uuid();
 			d.className = 'w';
 			d.id = id;
 			d.innerHTML = id.substring(0, 7) + '<div class="ep"></div>';
@@ -91,24 +94,24 @@
 
 			// make a few connections
 			instance.connect({
-				source: document.getElementById('opened'),
-				target: document.getElementById('phone1'),
+				source: opened,
+				target: phone1,
 				type: 'basic'
 			});
 			instance.connect({
-				source: document.getElementById('phone1'),
-				target: document.getElementById('phone1'),
+				source: phone1,
+				target: phone1,
 				type: 'basic'
 			});
 			instance.connect({
-				source: document.getElementById('phone1'),
-				target: document.getElementById('inperson'),
+				source: phone1,
+				target: inperson,
 				type: 'basic'
 			});
 
 			instance.connect({
-				source: document.getElementById('phone2'),
-				target: document.getElementById('rejected'),
+				source: phone2,
+				target: rejected,
 				type: 'basic'
 			});
 		});
@@ -123,28 +126,12 @@
 		bind:this={canvas}
 	>
 		{#if instance}
-			<Box id={'opened'} left={10} top={15} action={'begin'}>BEGIN</Box>
+			<Box bind:box={opened} left={10} top={15} action={'begin'}>BEGIN</Box>
+			<Box bind:box={phone1} left={35} top={12} action={'phone1'}>PHONE INTERVIEW 1</Box>
+			<Box bind:box={phone2} left={28} top={24} action={'phone2'}>PHONE INTERVIEW 2</Box>
+			<Box bind:box={inperson} left={12} top={23} action={'inperson'}>IN PERSON</Box>
+			<Box bind:box={rejected} left={10} top={35} action={'rejected'}>REJECTED</Box>
 		{/if}
-		<div class="w" id="opened">
-			BEGIN
-			<div class="ep" action="begin" />
-		</div>
-		<div class="w" id="phone1">
-			PHONE INTERVIEW 1
-			<div class="ep" action="phone1" />
-		</div>
-		<div class="w" id="phone2">
-			PHONE INTERVIEW 2
-			<div class="ep" action="phone2" />
-		</div>
-		<div class="w" id="inperson">
-			IN PERSON
-			<div class="ep" action="inperson" />
-		</div>
-		<div class="w" id="rejected">
-			REJECTED
-			<div class="ep" action="rejected" />
-		</div>
 	</div>
 	<!-- /demo -->
 	<!-- explanation -->
