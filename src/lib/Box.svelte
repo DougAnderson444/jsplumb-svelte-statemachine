@@ -14,11 +14,12 @@
 
 	const context = getContext(key);
 
-	$: if (instance && box) instance.manage(box);
+	// $: if (instance && box) instance.manage(box);
 
 	onMount(() => {
 		instance = context.getInstance();
 
+		instance.manage(box);
 		instance.addSourceSelector('.endpoint', {
 			edgeType: 'basic',
 			extract: {

@@ -1,6 +1,7 @@
 <script lang="ts">
 	import './app.css';
 	import { onMount, setContext } from 'svelte';
+	import Nodes from './Nodes.svelte';
 	import Box from './Box.svelte';
 	import { key } from './util';
 
@@ -20,12 +21,13 @@
 	setContext(key, {
 		getInstance: () => jsPlumbInstance
 	});
-	console.log({ uuid });
+
 	let boxes;
 	$: if (offsetHeight)
 		boxes = {
 			edges: [],
-			nodes: [
+			title: 'My Boxes',
+			children: [
 				{
 					id: uuid(),
 					name: 'opened',
@@ -33,7 +35,26 @@
 					top: offsetHeight / 5,
 					action: 'begin',
 					title: 'BEGIN',
-					edges: ['phone1']
+					edges: ['phone1'],
+					group: {},
+					children: [
+						{
+							id: uuid(),
+							name: 'phone2',
+							left: 10,
+							top: 23,
+							action: 'begin',
+							title: 'PHONE INTERVIEW 2'
+						},
+						{
+							id: uuid(),
+							name: 'inperson',
+							left: offsetHeight / 3,
+							top: offsetHeight / 2,
+							action: 'begin',
+							title: 'IN PERSON'
+						}
+					]
 				},
 				{
 					id: uuid(),
@@ -43,22 +64,7 @@
 					action: 'begin',
 					title: 'PHONE INTERVIEW 1'
 				},
-				{
-					id: uuid(),
-					name: 'phone2',
-					left: offsetHeight / 4,
-					top: offsetHeight / 3,
-					action: 'begin',
-					title: 'PHONE INTERVIEW 2'
-				},
-				{
-					id: uuid(),
-					name: 'inperson',
-					left: offsetHeight / 3,
-					top: offsetHeight / 2,
-					action: 'begin',
-					title: 'IN PERSON'
-				},
+
 				{
 					id: uuid(),
 					name: 'rejected',
@@ -185,16 +191,16 @@
 			// });
 		});
 
-		jsPlumbInstance.manage(myGroup);
-		jsPlumbInstance.addGroup({
-			el: myGroup,
-			id: 'myGroup',
-			orphan: true,
-			dragOptions: {
-				filter: '.svlt-grid-resizer'
-			},
-			filter: '.svlt-grid-resizer'
-		});
+		// jsPlumbInstance.manage(myGroup);
+		// jsPlumbInstance.addGroup({
+		// 	el: myGroup,
+		// 	id: 'myGroup',
+		// 	orphan: true,
+		// 	dragOptions: {
+		// 		filter: '.svlt-grid-resizer'
+		// 	},
+		// 	filter: '.svlt-grid-resizer'
+		// });
 	});
 </script>
 
@@ -207,8 +213,8 @@
 		bind:offsetHeight
 		bind:offsetWidth
 	>
-		{#if jsPlumbInstance && boxes.nodes.length}
-			{#each boxes.nodes as node}
+		{#if jsPlumbInstance && boxes.children.length}
+			<!-- {#each boxes.nodes as node}
 				<svelte:component
 					this={Box}
 					bind:box={boxes.nodes[node.id]}
@@ -216,11 +222,12 @@
 					top={node.top}
 					action={node.action}>{node.title}</svelte:component
 				>
-			{/each}
+			{/each} -->
+			<Nodes node={boxes} />
 		{/if}
 		<!-- <Box left={10} top={10}>Group</Box> -->
 
-		<Group bind:box={myGroup}>GroupZone</Group>
+		<!-- <Group bind:box={myGroup}>GroupZone</Group> -->
 	</div>
 	<!-- /demo -->
 	<!-- explanation -->

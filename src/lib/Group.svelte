@@ -1,5 +1,6 @@
 <script>
 	import { onMount } from 'svelte';
+	import { uuid } from '@jsplumb/util';
 
 	import { key } from './util';
 	import { getContext } from 'svelte';
@@ -23,12 +24,31 @@
 	let endpoint;
 	let instance;
 
+	let addToGroup;
+
+	let groupID = uuid();
+
 	const context = getContext(key);
 
-	$: if (instance && box) instance.manage(box);
+	// $: if (instance && box) instance.manage(box);
 
 	onMount(() => {
 		instance = context.getInstance();
+
+		instance.manage(box);
+		instance.addGroup({
+			el: box,
+			id: groupID,
+			orphan: true,
+			dragOptions: {
+				filter: '.svlt-grid-resizer'
+			},
+			filter: '.svlt-grid-resizer'
+		});
+
+		addToGroup = (nodeElement) => {
+			instance.addToGroup(groupID, nodeElement);
+		};
 	});
 
 	const resizePointerDown = (e) => {
@@ -73,7 +93,9 @@
 		? newSize.height
 		: height}px;"
 >
-	<slot>No Group Name</slot>
+	{#if addToGroup}
+		<slot {addToGroup}>No Group Name</slot>
+	{/if}
 	<div class="svlt-grid-resizer" on:pointerdown={resizePointerDown} />
 </div>
 
@@ -93,7 +115,7 @@
 		border-radius: 8px;
 		opacity: 0.8;
 		cursor: move;
-		background-color: white;
+		background-color: rgba(00, 100, 100, 0.025);
 		font-size: 11px;
 		-webkit-transition: background-color 0.25s ease-in;
 		-moz-transition: background-color 0.25s ease-in;
@@ -102,7 +124,7 @@
 
 	.w:hover {
 		background-color: #c5cbcf23;
-		color: rgba(26, 26, 26, 0.493);
+		/* color: rgba(26, 26, 26, 0.493); */
 	}
 
 	.svlt-grid-resizer {
