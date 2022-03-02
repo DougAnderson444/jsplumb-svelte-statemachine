@@ -1,73 +1,92 @@
-<script>
+<script lang="ts">
 	import './app.css';
 	import { onMount, setContext } from 'svelte';
 	import Box from './Box.svelte';
 	import { key } from './util';
 
+	import type { ConnectionEstablishedParams } from '@jsplumb/core';
+	import { uuid } from '@jsplumb/util';
+	import Group from './Group.svelte';
+
 	let canvas;
-	let instance;
+	let jsPlumbInstance;
 	let opened, begin, phone1, phone2, inperson, rejected;
 	let offsetHeight, offsetWidth;
 
-	const getInstance = () => instance;
+	let myGroup;
+
+	const getInstance = () => jsPlumbInstance;
 
 	setContext(key, {
-		getInstance: () => instance
+		getInstance: () => jsPlumbInstance
 	});
-
+	console.log({ uuid });
 	let boxes;
 	$: if (offsetHeight)
-		boxes = [
-			{
-				name: 'opened',
-				left: offsetHeight / 6,
-				top: offsetHeight / 5,
-				action: 'begin',
-				title: 'BEGIN'
-			},
-			{
-				name: 'phone1',
-				left: offsetHeight / 5,
-				top: offsetHeight / 4,
-				action: 'begin',
-				title: 'PHONE INTERVIEW 1'
-			},
-			{
-				name: 'phone2',
-				left: offsetHeight / 4,
-				top: offsetHeight / 3,
-				action: 'begin',
-				title: 'PHONE INTERVIEW 2'
-			},
-			{
-				name: 'inperson',
-				left: offsetHeight / 3,
-				top: offsetHeight / 2,
-				action: 'begin',
-				title: 'IN PERSON'
-			},
-			{
-				name: 'rejected',
-				left: offsetHeight / 2,
-				top: offsetHeight / 4,
-				action: 'begin',
-				title: 'REJECTED'
-			}
-		];
-
-	// <Box bind:box={phone1} left={35} top={12} action={'phone1'}>PHONE INTERVIEW 1</Box>
-	// <Box bind:box={phone2} left={28} top={24} action={'phone2'}>PHONE INTERVIEW 2</Box>
-	// <Box bind:box={inperson} left={12} top={23} action={'inperson'}>IN PERSON</Box>
-	// <Box bind:box={rejected} left={10} top={35} action={'rejected'}>REJECTED</Box>
+		boxes = {
+			edges: [],
+			nodes: [
+				{
+					id: uuid(),
+					name: 'opened',
+					left: offsetHeight / 6,
+					top: offsetHeight / 5,
+					action: 'begin',
+					title: 'BEGIN',
+					edges: ['phone1']
+				},
+				{
+					id: uuid(),
+					name: 'phone1',
+					left: offsetHeight / 5,
+					top: offsetHeight / 4,
+					action: 'begin',
+					title: 'PHONE INTERVIEW 1'
+				},
+				{
+					id: uuid(),
+					name: 'phone2',
+					left: offsetHeight / 4,
+					top: offsetHeight / 3,
+					action: 'begin',
+					title: 'PHONE INTERVIEW 2'
+				},
+				{
+					id: uuid(),
+					name: 'inperson',
+					left: offsetHeight / 3,
+					top: offsetHeight / 2,
+					action: 'begin',
+					title: 'IN PERSON'
+				},
+				{
+					id: uuid(),
+					name: 'rejected',
+					left: offsetHeight / 2,
+					top: offsetHeight / 4,
+					action: 'begin',
+					title: 'REJECTED'
+				}
+			]
+		};
+	$: boxes && console.log({ boxes });
 
 	onMount(async () => {
 		const { newInstance } = await import('@jsplumb/browser-ui');
 		const { BezierConnector } = await import('@jsplumb/connector-bezier');
 		const { uuid } = await import('@jsplumb/util');
+		const { EVENT_CONNECTION } = await import('@jsplumb/core');
 
 		// setup some defaults for jsPlumb.
-		instance = newInstance({
-			endpoint: { type: 'Dot', options: { radius: 2 } },
+		jsPlumbInstance = newInstance({
+			endpoint: {
+				type: 'Dot',
+				options: {
+					radius: 4,
+					cssClass: 'endpointRound',
+					hoverClass: 'endpointRoundHover'
+				}
+			},
 			connectionOverlays: [
 				{
 					type: 'Arrow',
@@ -80,10 +99,20 @@
 				},
 				{ type: 'Label', options: { label: 'Connect!', id: 'label', cssClass: 'aLabel' } }
 			],
-			container: canvas
+			container: canvas,
+			dragOptions: {
+				filter: '.svlt-grid-resizer'
+			}
 		});
 
-		instance.registerConnectionType('basic', {
+		jsPlumbInstance.bind(EVENT_CONNECTION, handleConnection);
+
+		function handleConnection(params: ConnectionEstablishedParams) {
+			console.log('Connection', { params });
+			boxes.edges = [...boxes.edges, { source: params.sourceId, target: params.targetId }];
+		}
+
+		jsPlumbInstance.registerConnectionType('basic', {
 			anchor: 'Continuous',
 			connector: 'StateMachine',
 			paintStyle: {
@@ -98,59 +127,73 @@
 		var windows = document.querySelectorAll('.statemachine-demo .w');
 
 		// bind a click listener to each connection; the connection is deleted
-		instance.bind('click', function (c) {
-			instance.deleteConnection(c);
+		jsPlumbInstance.bind('click', function (c) {
+			jsPlumbInstance.deleteConnection(c);
 		});
 
 		// bind a connection listener. note that the parameter passed to this function contains more than
 		// just the new connection - see the documentation for a full list of what is included in 'info'.
 		// this listener sets the connection's internal
 		// id as the label overlay's text.
-		instance.bind('connection', function (info) {
+		jsPlumbInstance.bind('connection', function (info) {
 			info.connection.getOverlay('label').setLabel(info.connection.id);
 		});
 
 		// bind a double click listener to "canvas"; add new node when this occurs.
-		instance.on(canvas, 'dblclick', function (e) {
+		jsPlumbInstance.on(canvas, 'dblclick', function (e) {
 			newNode(e.offsetX, e.offsetY);
 		});
 
 		function newNode(x, y) {
-			boxes = [...boxes, { name: uuid(), left: x, top: y, action: '', title: uuid() }];
+			boxes = {
+				...boxes,
+				nodes: [...boxes.nodes, { name: uuid(), left: x, top: y, action: '', title: uuid() }]
+			};
 		}
 
-		instance.addTargetSelector('.w', {
+		jsPlumbInstance.addTargetSelector('.w', {
 			anchor: 'Continuous',
 			allowLoopback: true
 		});
 
 		// suspend drawing and initialise.
-		instance.batch(function () {
-			// register all windows with the instance
-			instance.manageAll(windows);
+		jsPlumbInstance.batch(function () {
+			// register all windows with the jsPlumbInstance
+			jsPlumbInstance.manageAll(windows);
 
 			// make a few connections
-			instance.connect({
-				source: opened,
-				target: phone1,
-				type: 'basic'
-			});
-			instance.connect({
-				source: phone1,
-				target: phone1,
-				type: 'basic'
-			});
-			instance.connect({
-				source: phone1,
-				target: inperson,
-				type: 'basic'
-			});
+			// jsPlumbInstance.connect({
+			// 	source: boxes[opened],
+			// 	target: phone1,
+			// 	type: 'basic'
+			// });
+			// jsPlumbInstance.connect({
+			// 	source: phone1,
+			// 	target: phone1,
+			// 	type: 'basic'
+			// });
+			// jsPlumbInstance.connect({
+			// 	source: phone1,
+			// 	target: inperson,
+			// 	type: 'basic'
+			// });
 
-			instance.connect({
-				source: phone2,
-				target: rejected,
-				type: 'basic'
-			});
+			// jsPlumbInstance.connect({
+			// 	source: phone2,
+			// 	target: rejected,
+			// 	type: 'basic'
+			// });
+		});
+
+		jsPlumbInstance.manage(myGroup);
+		jsPlumbInstance.addGroup({
+			el: myGroup,
+			id: 'myGroup',
+			orphan: true,
+			dragOptions: {
+				filter: '.svlt-grid-resizer'
+			},
+			filter: '.svlt-grid-resizer'
 		});
 	});
 </script>
@@ -164,17 +207,20 @@
 		bind:offsetHeight
 		bind:offsetWidth
 	>
-		{#if instance && boxes.length}
-			{#each boxes as box}
+		{#if jsPlumbInstance && boxes.nodes.length}
+			{#each boxes.nodes as node}
 				<svelte:component
 					this={Box}
-					bind:box={boxes[box.name]}
-					left={box.left}
-					top={box.top}
-					action={box.action}>{box.title}</svelte:component
+					bind:box={boxes.nodes[node.id]}
+					left={node.left}
+					top={node.top}
+					action={node.action}>{node.title}</svelte:component
 				>
 			{/each}
 		{/if}
+		<!-- <Box left={10} top={10}>Group</Box> -->
+
+		<Group bind:box={myGroup}>GroupZone</Group>
 	</div>
 	<!-- /demo -->
 	<!-- explanation -->
@@ -198,6 +244,19 @@
 </section>
 
 <style>
+	:root {
+		--empty: rgba(255, 255, 255, 0.5);
+		--shade-green: rgb(186 243 202 / 50%);
+	}
+	:global(.endpointRound circle, .endpointSquare rect) {
+		fill: var(--empty);
+	}
+	:global(.endpointRound) {
+		border: 1px solid rgba(128, 128, 128, 0.4);
+		border-radius: 50%;
+		z-index: 10;
+		background-color: var(--shade-green);
+	}
 	.demo {
 		/* for IE10+ touch devices */
 		touch-action: none;
