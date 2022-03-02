@@ -55,6 +55,12 @@
 
 	const resizePointerUp = (e) => {
 		e.stopPropagation();
+
+		width = newSize.width;
+		height = newSize.height;
+
+		active = false;
+
 		window.removeEventListener('pointermove', resizePointerMove);
 		window.removeEventListener('pointerup', resizePointerUp);
 	};
