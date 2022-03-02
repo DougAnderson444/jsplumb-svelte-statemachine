@@ -28,7 +28,7 @@
 	});
 </script>
 
-<div bind:this={box} class="w" style="left: {left}em; top: {top}em;">
+<div bind:this={box} class="w" style="left: {left}px; top: {top}px;">
 	<slot>No Name</slot>
 	<div bind:this={ep} class="ep" {action} />
 </div>

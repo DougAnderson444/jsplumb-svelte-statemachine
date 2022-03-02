@@ -7,12 +7,58 @@
 	let canvas;
 	let instance;
 	let opened, begin, phone1, phone2, inperson, rejected;
+	let offsetHeight, offsetWidth;
 
 	const getInstance = () => instance;
 
 	setContext(key, {
 		getInstance: () => instance
 	});
+
+	let boxes;
+	$: if (offsetHeight)
+		boxes = [
+			{
+				name: 'opened',
+				left: offsetHeight / 6,
+				top: offsetHeight / 5,
+				action: 'begin',
+				title: 'BEGIN'
+			},
+			{
+				name: 'phone1',
+				left: offsetHeight / 5,
+				top: offsetHeight / 4,
+				action: 'begin',
+				title: 'PHONE INTERVIEW 1'
+			},
+			{
+				name: 'phone2',
+				left: offsetHeight / 4,
+				top: offsetHeight / 3,
+				action: 'begin',
+				title: 'PHONE INTERVIEW 2'
+			},
+			{
+				name: 'inperson',
+				left: offsetHeight / 3,
+				top: offsetHeight / 2,
+				action: 'begin',
+				title: 'IN PERSON'
+			},
+			{
+				name: 'rejected',
+				left: offsetHeight / 2,
+				top: offsetHeight / 4,
+				action: 'begin',
+				title: 'REJECTED'
+			}
+		];
+
+	// <Box bind:box={phone1} left={35} top={12} action={'phone1'}>PHONE INTERVIEW 1</Box>
+	// <Box bind:box={phone2} left={28} top={24} action={'phone2'}>PHONE INTERVIEW 2</Box>
+	// <Box bind:box={inperson} left={12} top={23} action={'inperson'}>IN PERSON</Box>
+	// <Box bind:box={rejected} left={10} top={35} action={'rejected'}>REJECTED</Box>
 
 	onMount(async () => {
 		const { newInstance } = await import('@jsplumb/browser-ui');
@@ -26,9 +72,9 @@
 				{
 					type: 'Arrow',
 					options: {
-						location: 1,
+						location: 0.8,
 						id: 'arrow',
-						length: 14,
+						length: 16,
 						foldback: 0.8
 					}
 				},
@@ -70,16 +116,7 @@
 		});
 
 		function newNode(x, y) {
-			var d = document.createElement('div');
-			var id = uuid();
-			d.className = 'w';
-			d.id = id;
-			d.innerHTML = id.substring(0, 7) + '<div class="ep"></div>';
-			d.style.left = x + 'px';
-			d.style.top = y + 'px';
-			instance.getContainer().appendChild(d);
-			instance.manage(d);
-			return d;
+			boxes = [...boxes, { name: uuid(), left: x, top: y, action: '', title: uuid() }];
 		}
 
 		instance.addTargetSelector('.w', {
@@ -121,16 +158,22 @@
 <section class="jtk-demo-main demo">
 	<!-- demo -->
 	<div
-		class="jtk-demo-canvas canvas-wide statemachine-demo jtk-surface jtk-surface-nopan"
+		class="jtk-demo-canvas canvas-wide statemachine-demo jtk-surface jtk-surface-nopan canvas"
 		id="canvas"
 		bind:this={canvas}
+		bind:offsetHeight
+		bind:offsetWidth
 	>
-		{#if instance}
-			<Box bind:box={opened} left={10} top={15} action={'begin'}>BEGIN</Box>
-			<Box bind:box={phone1} left={35} top={12} action={'phone1'}>PHONE INTERVIEW 1</Box>
-			<Box bind:box={phone2} left={28} top={24} action={'phone2'}>PHONE INTERVIEW 2</Box>
-			<Box bind:box={inperson} left={12} top={23} action={'inperson'}>IN PERSON</Box>
-			<Box bind:box={rejected} left={10} top={35} action={'rejected'}>REJECTED</Box>
+		{#if instance && boxes.length}
+			{#each boxes as box}
+				<svelte:component
+					this={Box}
+					bind:box={boxes[box.name]}
+					left={box.left}
+					top={box.top}
+					action={box.action}>{box.title}</svelte:component
+				>
+			{/each}
 		{/if}
 	</div>
 	<!-- /demo -->
@@ -155,4 +198,13 @@
 </section>
 
 <style>
+	.demo {
+		/* for IE10+ touch devices */
+		touch-action: none;
+	}
+
+	#canvas {
+		width: 100vw;
+		height: 50vh;
+	}
 </style>
