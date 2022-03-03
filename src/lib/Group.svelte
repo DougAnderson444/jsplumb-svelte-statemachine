@@ -5,11 +5,17 @@
 	import { key } from './util';
 	import { getContext } from 'svelte';
 
-	export let left = 0;
-	export let top = 0;
 	export let box = null;
-	export let width = 400;
-	export let height = 400;
+	export let node;
+
+	// @ts-ignore
+	export let width = node?.width || 400;
+	// @ts-ignore
+	export let height = node?.height || 400;
+	// @ts-ignore
+	export let left = node?.left || 0;
+	// @ts-ignore
+	export let top = node?.top || 0;
 
 	let newSize = { width, height };
 	let initSize = { width: 0, height: 0 };
@@ -104,8 +110,6 @@
 		padding: 16px;
 		position: absolute;
 		z-index: 4;
-		width: 400px;
-		height: 400px;
 		border: 1px dashed grey;
 		box-shadow: 2px 2px 19px #e0e0e0;
 		-o-box-shadow: 2px 2px 19px #e0e0e0;

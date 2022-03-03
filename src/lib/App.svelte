@@ -23,16 +23,20 @@
 	});
 
 	let boxes;
-	$: if (offsetHeight)
+	$: if (offsetHeight && offsetWidth)
 		boxes = {
 			edges: [],
 			title: 'My Boxes',
+			width: 400,
+			height: 600,
 			children: [
 				{
 					id: uuid(),
 					name: 'opened',
-					left: offsetHeight / 6,
-					top: offsetHeight / 5,
+					left: offsetWidth * 0.15,
+					top: offsetHeight * 0.41,
+					width: 200,
+					height: 400,
 					action: 'begin',
 					title: 'BEGIN',
 					edges: ['phone1'],
@@ -41,16 +45,16 @@
 						{
 							id: uuid(),
 							name: 'phone2',
-							left: 10,
-							top: 23,
+							left: 15,
+							top: 60,
 							action: 'begin',
 							title: 'PHONE INTERVIEW 2'
 						},
 						{
 							id: uuid(),
 							name: 'inperson',
-							left: offsetHeight / 3,
-							top: offsetHeight / 2,
+							left: offsetWidth * 0.1,
+							top: offsetHeight * 0.5,
 							action: 'begin',
 							title: 'IN PERSON'
 						}
@@ -59,8 +63,8 @@
 				{
 					id: uuid(),
 					name: 'phone1',
-					left: offsetHeight / 5,
-					top: offsetHeight / 4,
+					left: offsetWidth * 0.25,
+					top: offsetHeight * 0.2,
 					action: 'begin',
 					title: 'PHONE INTERVIEW 1'
 				},
@@ -68,8 +72,8 @@
 				{
 					id: uuid(),
 					name: 'rejected',
-					left: offsetHeight / 2,
-					top: offsetHeight / 4,
+					left: offsetWidth * 0.1,
+					top: offsetHeight * 0.3,
 					action: 'begin',
 					title: 'REJECTED'
 				}

@@ -12,14 +12,13 @@
     add bound variable to parent group
     */
 	$: if (nodeElement && addNodeElToParent) addNodeElToParent(nodeElement);
-	console.log({ node });
 </script>
 
 {#if node}
 	<slot />
 	{#if node?.children?.length}
 		<!-- Group passes down the function  addNodeElToParent so that the child can call it once the node element has been created and bound -->
-		<Group bind:box={nodeElement} let:addToGroup
+		<Group bind:box={nodeElement} let:addToGroup {node}
 			>{node.title} has {node.children.length} children<br />
 			<!-- loop through each child, also checking for groups/children and linking them up -->
 			{#each node.children as child, c}
