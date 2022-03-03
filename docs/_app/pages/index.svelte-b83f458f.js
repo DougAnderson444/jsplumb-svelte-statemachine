@@ -26,8 +26,8 @@ const get_default_slot_changes = (dirty) => ({ addToGroup: dirty & 128 });
 const get_default_slot_context = (ctx) => ({ addToGroup: ctx[7] });
 function create_if_block$2(ctx) {
   let current;
-  const default_slot_template = ctx[10].default;
-  const default_slot = create_slot(default_slot_template, ctx, ctx[9], get_default_slot_context);
+  const default_slot_template = ctx[11].default;
+  const default_slot = create_slot(default_slot_template, ctx, ctx[10], get_default_slot_context);
   const default_slot_or_fallback = default_slot || fallback_block$1();
   return {
     c() {
@@ -46,8 +46,8 @@ function create_if_block$2(ctx) {
     },
     p(ctx2, dirty) {
       if (default_slot) {
-        if (default_slot.p && (!current || dirty & 640)) {
-          update_slot_base(default_slot, default_slot_template, ctx2, ctx2[9], !current ? get_all_dirty_from_scope(ctx2[9]) : get_slot_changes(default_slot_template, ctx2[9], dirty, get_default_slot_changes), get_default_slot_context);
+        if (default_slot.p && (!current || dirty & 1152)) {
+          update_slot_base(default_slot, default_slot_template, ctx2, ctx2[10], !current ? get_all_dirty_from_scope(ctx2[10]) : get_slot_changes(default_slot_template, ctx2[10], dirty, get_default_slot_changes), get_default_slot_context);
         }
       }
     },
@@ -114,8 +114,8 @@ function create_fragment$4(ctx) {
       this.h();
     },
     h() {
-      attr(div0, "class", "svlt-grid-resizer svelte-1w7yfw0");
-      attr(div1, "class", "w svelte-1w7yfw0");
+      attr(div0, "class", "svlt-grid-resizer svelte-g6akod");
+      attr(div1, "class", "w svelte-g6akod");
       set_style(div1, "left", ctx[3] + "px");
       set_style(div1, "top", ctx[4] + "px");
       set_style(div1, "width", (ctx[6] ? ctx[5].width : ctx[1]) + "px");
@@ -127,7 +127,7 @@ function create_fragment$4(ctx) {
         if_block.m(div1, null);
       append_hydration(div1, t);
       append_hydration(div1, div0);
-      ctx[11](div1);
+      ctx[12](div1);
       current = true;
       if (!mounted) {
         dispose = listen(div0, "pointerdown", ctx[8]);
@@ -182,7 +182,7 @@ function create_fragment$4(ctx) {
         detach(div1);
       if (if_block)
         if_block.d();
-      ctx[11](null);
+      ctx[12](null);
       mounted = false;
       dispose();
     }
@@ -190,11 +190,12 @@ function create_fragment$4(ctx) {
 }
 function instance_1$1($$self, $$props, $$invalidate) {
   let { $$slots: slots = {}, $$scope } = $$props;
-  let { left = 0 } = $$props;
-  let { top = 0 } = $$props;
   let { box = null } = $$props;
-  let { width = 400 } = $$props;
-  let { height = 400 } = $$props;
+  let { node } = $$props;
+  let { width = (node == null ? void 0 : node.width) || 400 } = $$props;
+  let { height = (node == null ? void 0 : node.height) || 400 } = $$props;
+  let { left = (node == null ? void 0 : node.left) || 0 } = $$props;
+  let { top = (node == null ? void 0 : node.top) || 0 } = $$props;
   let newSize = { width, height };
   let initSize = { width: 0, height: 0 };
   let resizeInitPos = { x: 0, y: 0 };
@@ -247,18 +248,20 @@ function instance_1$1($$self, $$props, $$invalidate) {
     });
   }
   $$self.$$set = ($$props2) => {
-    if ("left" in $$props2)
-      $$invalidate(3, left = $$props2.left);
-    if ("top" in $$props2)
-      $$invalidate(4, top = $$props2.top);
     if ("box" in $$props2)
       $$invalidate(0, box = $$props2.box);
+    if ("node" in $$props2)
+      $$invalidate(9, node = $$props2.node);
     if ("width" in $$props2)
       $$invalidate(1, width = $$props2.width);
     if ("height" in $$props2)
       $$invalidate(2, height = $$props2.height);
+    if ("left" in $$props2)
+      $$invalidate(3, left = $$props2.left);
+    if ("top" in $$props2)
+      $$invalidate(4, top = $$props2.top);
     if ("$$scope" in $$props2)
-      $$invalidate(9, $$scope = $$props2.$$scope);
+      $$invalidate(10, $$scope = $$props2.$$scope);
   };
   return [
     box,
@@ -270,6 +273,7 @@ function instance_1$1($$self, $$props, $$invalidate) {
     active,
     addToGroup,
     resizePointerDown,
+    node,
     $$scope,
     slots,
     div1_binding
@@ -279,11 +283,12 @@ class Group extends SvelteComponent {
   constructor(options) {
     super();
     init(this, options, instance_1$1, create_fragment$4, safe_not_equal, {
-      left: 3,
-      top: 4,
       box: 0,
+      node: 9,
       width: 1,
-      height: 2
+      height: 2,
+      left: 3,
+      top: 4
     });
   }
 }
@@ -650,6 +655,7 @@ function create_if_block_1(ctx) {
     ctx[4](value);
   }
   let group_props = {
+    node: ctx[1],
     $$slots: {
       default: [
         create_default_slot,
@@ -677,6 +683,8 @@ function create_if_block_1(ctx) {
     },
     p(ctx2, dirty) {
       const group_changes = {};
+      if (dirty & 2)
+        group_changes.node = ctx2[1];
       if (dirty & 322) {
         group_changes.$$scope = { dirty, ctx: ctx2 };
       }
@@ -1003,7 +1011,6 @@ function instance$1($$self, $$props, $$invalidate) {
   let { nodeElement = null } = $$props;
   let { node } = $$props;
   let { addNodeElToParent = null } = $$props;
-  console.log({ node });
   function group_box_binding(value) {
     nodeElement = value;
     $$invalidate(0, nodeElement);
@@ -1052,7 +1059,7 @@ var App_svelte_svelte_type_style_lang = "";
 function create_if_block(ctx) {
   let nodes;
   let current;
-  nodes = new Nodes({ props: { node: ctx[1] } });
+  nodes = new Nodes({ props: { node: ctx[2] } });
   return {
     c() {
       create_component(nodes.$$.fragment);
@@ -1066,8 +1073,8 @@ function create_if_block(ctx) {
     },
     p(ctx2, dirty) {
       const nodes_changes = {};
-      if (dirty & 2)
-        nodes_changes.node = ctx2[1];
+      if (dirty & 4)
+        nodes_changes.node = ctx2[2];
       nodes.$set(nodes_changes);
     },
     i(local) {
@@ -1109,7 +1116,7 @@ function create_fragment$1(ctx) {
   let p4;
   let t11;
   let current;
-  let if_block = ctx[3] && ctx[1].children.length && create_if_block(ctx);
+  let if_block = ctx[4] && ctx[2].children.length && create_if_block(ctx);
   return {
     c() {
       section = element("section");
@@ -1217,10 +1224,10 @@ function create_fragment$1(ctx) {
       current = true;
     },
     p(ctx2, [dirty]) {
-      if (ctx2[3] && ctx2[1].children.length) {
+      if (ctx2[4] && ctx2[2].children.length) {
         if (if_block) {
           if_block.p(ctx2, dirty);
-          if (dirty & 10) {
+          if (dirty & 20) {
             transition_in(if_block, 1);
           }
         } else {
@@ -1272,7 +1279,7 @@ function instance($$self, $$props, $$invalidate) {
     const { EVENT_CONNECTION } = await __vitePreload(() => import("../chunks/jsplumb.core.es-2ecea26b.js").then(function(n) {
       return n.jsplumb_core_es;
     }), true ? ["chunks/jsplumb.core.es-2ecea26b.js","chunks/vendor-e8797a8c.js"] : void 0);
-    $$invalidate(3, jsPlumbInstance = newInstance({
+    $$invalidate(4, jsPlumbInstance = newInstance({
       endpoint: {
         type: "Dot",
         options: {
@@ -1306,7 +1313,7 @@ function instance($$self, $$props, $$invalidate) {
     jsPlumbInstance.bind(EVENT_CONNECTION, handleConnection);
     function handleConnection(params) {
       console.log("Connection", { params });
-      $$invalidate(1, boxes.edges = [
+      $$invalidate(2, boxes.edges = [
         ...boxes.edges,
         {
           source: params.sourceId,
@@ -1336,7 +1343,7 @@ function instance($$self, $$props, $$invalidate) {
       newNode(e.offsetX, e.offsetY);
     });
     function newNode(x, y) {
-      $$invalidate(1, boxes = __spreadProps(__spreadValues({}, boxes), {
+      $$invalidate(2, boxes = __spreadProps(__spreadValues({}, boxes), {
         nodes: [
           ...boxes.nodes,
           {
@@ -1360,27 +1367,31 @@ function instance($$self, $$props, $$invalidate) {
   function div0_binding($$value) {
     binding_callbacks[$$value ? "unshift" : "push"](() => {
       canvas = $$value;
-      $$invalidate(2, canvas);
+      $$invalidate(3, canvas);
     });
   }
   function div0_elementresize_handler() {
     offsetHeight = this.offsetHeight;
     offsetWidth = this.offsetWidth;
     $$invalidate(0, offsetHeight);
-    $$invalidate(4, offsetWidth);
+    $$invalidate(1, offsetWidth);
   }
   $$self.$$.update = () => {
-    if ($$self.$$.dirty & 1) {
-      if (offsetHeight)
-        $$invalidate(1, boxes = {
+    if ($$self.$$.dirty & 3) {
+      if (offsetHeight && offsetWidth)
+        $$invalidate(2, boxes = {
           edges: [],
           title: "My Boxes",
+          width: 400,
+          height: 600,
           children: [
             {
               id: uuid(),
               name: "opened",
-              left: offsetHeight / 6,
-              top: offsetHeight / 5,
+              left: offsetWidth * 0.15,
+              top: offsetHeight * 0.41,
+              width: 200,
+              height: 400,
               action: "begin",
               title: "BEGIN",
               edges: ["phone1"],
@@ -1389,16 +1400,16 @@ function instance($$self, $$props, $$invalidate) {
                 {
                   id: uuid(),
                   name: "phone2",
-                  left: 10,
-                  top: 23,
+                  left: 15,
+                  top: 60,
                   action: "begin",
                   title: "PHONE INTERVIEW 2"
                 },
                 {
                   id: uuid(),
                   name: "inperson",
-                  left: offsetHeight / 3,
-                  top: offsetHeight / 2,
+                  left: offsetWidth * 0.1,
+                  top: offsetHeight * 0.5,
                   action: "begin",
                   title: "IN PERSON"
                 }
@@ -1407,32 +1418,32 @@ function instance($$self, $$props, $$invalidate) {
             {
               id: uuid(),
               name: "phone1",
-              left: offsetHeight / 5,
-              top: offsetHeight / 4,
+              left: offsetWidth * 0.25,
+              top: offsetHeight * 0.2,
               action: "begin",
               title: "PHONE INTERVIEW 1"
             },
             {
               id: uuid(),
               name: "rejected",
-              left: offsetHeight / 2,
-              top: offsetHeight / 4,
+              left: offsetWidth * 0.1,
+              top: offsetHeight * 0.3,
               action: "begin",
               title: "REJECTED"
             }
           ]
         });
     }
-    if ($$self.$$.dirty & 2) {
+    if ($$self.$$.dirty & 4) {
       boxes && console.log({ boxes });
     }
   };
   return [
     offsetHeight,
+    offsetWidth,
     boxes,
     canvas,
     jsPlumbInstance,
-    offsetWidth,
     div0_binding,
     div0_elementresize_handler
   ];
@@ -1481,4 +1492,4 @@ class Routes extends SvelteComponent {
   }
 }
 export { Routes as default };
-//# sourceMappingURL=index.svelte-81cb4bf0.js.map
+//# sourceMappingURL=index.svelte-b83f458f.js.map
